@@ -1,4 +1,9 @@
-const express = require('express')
-const app = express()
+const express = require("express");
+const app = express();
 
-module.exports = app
+const usersRouter = require("./usersRouter");
+const groupsRouter = require("./groupsRouter");
+
+app.use("/user", usersRouter);
+app.use("/group", groupsRouter);
+module.exports = app;
