@@ -1,4 +1,4 @@
-const { findUserById } = require('../model/user')
+const UserTable = require('../model/user')
 
 const checkToken = async (req, res, next) => {
   const user_id = req.headers.authorization.split(' ')[1]
@@ -9,7 +9,7 @@ const checkToken = async (req, res, next) => {
         message: 'You are not authorized to access this route',
       })
     }
-    const user = await findUserById(user_id)
+    const user = await UserTable.findUserById(user_id)
     if (user) {
       req.user_id = user.Id
       next()
