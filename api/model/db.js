@@ -18,6 +18,7 @@ const users = [
     password: 123456,
   },
 ]
+
 const connectDatabase = () => {
   console.log('Connected to database')
   const db = new sqlite3.Database('./db.sqlite3', (err) => {
@@ -31,6 +32,7 @@ const connectDatabase = () => {
     console.log('Connected to database')
     createTables(db)
   })
+  return db
 }
 const createTables = (db) => {
   const maxUsernameLength = 30
@@ -40,7 +42,7 @@ const createTables = (db) => {
   return db.exec(
     `CREATE TABLE IF NOT EXISTS User(Id INTEGER PRIMARY KEY AUTOINCREMENT,Username VARCHAR(${maxUsernameLength}),Password VARCHAR(${maxPasswordLength}));
     CREATE TABLE IF NOT EXISTS Message (Id INTEGER PRIMARY KEY AUTOINCREMENT,Content VARCHAR(${messageContentLength}),UserId INTEGER, CreatedAt DATE,ModifiedAt DATE ,FOREIGN KEY (UserId) REFERENCES User(Id));
-    CREATE TABLE IF NOT EXISTS Groups (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(${groupNameLength}));
+    CREATE TABLE IF NOT EXISTS Groups (Id INTEGER PRIMARY KEY AUTOINCREMENT, Name VARCHAR(${groupNameLength}), Owner INTEGER, FOREIGN KEY (Owner) REFERENCES User(Id));
     CREATE TABLE IF NOT EXISTS UserGroup (Id INTEGER PRIMARY KEY AUTOINCREMENT,UserId INTEGER,GroupId INTEGER,FOREIGN KEY (UserId) REFERENCES User(Id),FOREIGN KEY (GroupId) REFERENCES Groups(Id));`,
     (err) => {
       if (err) {
