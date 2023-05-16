@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('./db');
 
 const GroupTable = {
   createGroup: (name, user_id) => {
@@ -8,26 +8,26 @@ const GroupTable = {
         [name, user_id],
         (err, row) => {
           if (err) {
-            reject(err)
-            return
+            reject(err);
+            return;
           }
-          resolve(true)
+          resolve(true);
         }
-      )
-    })
+      );
+    });
   },
 
   findGroupByName: (name) => {
     return new Promise((resolve, reject) => {
       db.get('SELECT * FROM Groups WHERE Name = ?', [name], (err, row) => {
-        console.log(row)
+        console.log(row);
         if (err) {
-          reject(err)
-          return
+          reject(err);
+          return;
         }
-        resolve(row)
-      })
-    })
+        resolve(row);
+      });
+    });
   },
   findGroupByGroupIdAndOwnerId: (group_id, user_id) => {
     return new Promise((resolve, reject) => {
@@ -36,14 +36,14 @@ const GroupTable = {
         [group_id, user_id],
         (err, row) => {
           if (err) {
-            reject(err)
+            reject(err);
           } else {
-            resolve(row)
+            resolve(row);
           }
         }
-      )
-    })
+      );
+    });
   },
-}
+};
 
-module.exports = GroupTable
+module.exports = GroupTable;

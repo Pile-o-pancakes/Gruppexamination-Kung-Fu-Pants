@@ -1,16 +1,16 @@
-const db = require('./db')
+const db = require('./db');
 
 const UserTable = {
   findUserById: (id) => {
     return new Promise((resolve, reject) => {
       db.get(`SELECT * FROM User WHERE Id = ?`, [Number(id)], (err, row) => {
         if (err) {
-          reject(err)
+          reject(err);
         }
-        resolve(row)
-      })
-    })
+        resolve(row);
+      });
+    });
   },
-}
+};
 
-module.exports = UserTable
+module.exports = UserTable;

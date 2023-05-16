@@ -1,4 +1,4 @@
-const db = require('./db')
+const db = require('./db');
 
 const UserGroupTable = {
   addNewMember: (user_id, group_id) => {
@@ -8,13 +8,13 @@ const UserGroupTable = {
         [user_id, group_id],
         (err) => {
           if (err) {
-            reject(err)
-            return
+            reject(err);
+            return;
           }
-          resolve(true)
+          resolve(true);
         }
-      )
-    })
+      );
+    });
   },
   getGroup: (user_id, group_id) => {
     return new Promise((resolve, reject) => {
@@ -23,13 +23,13 @@ const UserGroupTable = {
         [user_id, group_id],
         (err, row) => {
           if (err) {
-            reject(err)
-            return
+            reject(err);
+            return;
           }
-          resolve(row)
+          resolve(row);
         }
-      )
-    })
+      );
+    });
   },
   deleteMember: (user_id, group_id) => {
     return new Promise((resolve, reject) => {
@@ -38,14 +38,14 @@ const UserGroupTable = {
         [user_id, group_id],
         (err) => {
           if (err) {
-            reject(err)
-            return
+            reject(err);
+            return;
           }
-          resolve(true)
+          resolve(true);
         }
-      )
-    })
+      );
+    });
   },
-}
+};
 
-module.exports = UserGroupTable
+module.exports = UserGroupTable;
