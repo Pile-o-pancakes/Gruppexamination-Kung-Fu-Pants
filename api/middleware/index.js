@@ -11,7 +11,7 @@ const checkToken = async (req, res, next) => {
     }
     const user = await UserTable.findUserById(user_id)
     if (user) {
-      req.user_id = user.Id
+      req.user_id = user.Id;
       next()
     } else {
       return res.status(404).json({

@@ -31,6 +31,21 @@ const UserGroupTable = {
       )
     })
   },
+  deleteMember: (user_id, group_id) => {
+    return new Promise((resolve, reject) => {
+      db.run(
+        `DELETE FROM UserGroup WHERE UserId = ? AND GroupId = ?`,
+        [user_id, group_id],
+        (err) => {
+          if (err) {
+            reject(err)
+            return
+          }
+          resolve(true)
+        }
+      )
+    })
+  },
 }
 
 module.exports = UserGroupTable

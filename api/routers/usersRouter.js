@@ -16,6 +16,6 @@ const userController = require('../controllers/usersController.js')
 
 router.post('/join/:group_id', userController.joinGroup)
 
-// router.delete("/leave/:id", userController.leaveGroup);
+router.delete('/leave/:group_id', userController.leaveGroup)
 
 module.exports = router
