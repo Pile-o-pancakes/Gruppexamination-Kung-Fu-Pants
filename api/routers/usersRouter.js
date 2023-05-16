@@ -1,6 +1,6 @@
-const { Router } = require("express");
-const router = Router();
-const userController = require("../controllers/usersController.js");
+const { Router } = require('express')
+const router = Router()
+const userController = require('../controllers/usersController.js')
 
 // router.get("/message", userController.getMessages);
 
@@ -14,8 +14,8 @@ const userController = require("../controllers/usersController.js");
 
 // router.get("/groups/:id", userController.getOwnGroups);
 
-// router.post("/join/:id", userController.joinGroup);
+router.post('/join/:group_id', userController.joinGroup)
 
 // router.delete("/leave/:id", userController.leaveGroup);
 
-module.exports = router;
+module.exports = router

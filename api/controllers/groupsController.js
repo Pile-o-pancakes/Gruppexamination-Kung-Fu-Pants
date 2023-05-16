@@ -1,6 +1,6 @@
 const db = require('../model/db')
 const GroupTable = require('../model/group')
-const UserGroupTable = require('../model/usergroup')
+const UserGroupTable = require('../model/userGroup')
 const groupController = {
   createGroup: async (req, res) => {
     const { name } = req.body
@@ -21,7 +21,7 @@ const groupController = {
     } catch (error) {
       return res.status(400).json({
         success: false,
-        message: error.message,
+        message: error?.message || 'Internal server error',
       })
     }
   },
