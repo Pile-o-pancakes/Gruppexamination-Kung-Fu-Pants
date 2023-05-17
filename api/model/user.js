@@ -21,6 +21,16 @@ const UserTable = {
       });
     });
   },
+  updateUserPostedMessages: (id,update) => {
+    return new Promise((resolve, reject) => {
+      db.all(`UPDATE Message SET content = ? WHERE Id = ?`, [update, id], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  },
 };
 
 module.exports = UserTable;

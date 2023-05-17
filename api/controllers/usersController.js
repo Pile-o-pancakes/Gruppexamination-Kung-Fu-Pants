@@ -116,6 +116,31 @@ const usersController = {
       });
     }
   },
+  updateMessage: async (req, res) => {
+    const message_id = req.params.id;
+    const update = req.body.message;
+    console.log(message_id)
+    console.log(update)
+    try {
+      const messages = await UserTable.updateUserPostedMessages(message_id, update);
+
+      if (!messages) {
+        return res.status(400).json({
+          success: false,
+          message: 'No messages found',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        messages,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
 };
 
 module.exports = usersController;

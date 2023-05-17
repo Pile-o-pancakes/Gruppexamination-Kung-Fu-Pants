@@ -6,7 +6,7 @@ router.get('/message', userController.getUserPostedMessages);
 
 router.post('/message/:group_id', userController.postMessage);
 
-// router.put("/message/:id", userController.updateMessage);
+router.put("/message/:id", userController.updateMessage);
 
 // router.delete("/message/:id", userController.deleteMessage);
 
