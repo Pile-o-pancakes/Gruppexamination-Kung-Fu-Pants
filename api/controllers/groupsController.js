@@ -14,6 +14,8 @@ const groupController = {
         });
       const result = await GroupTable.createGroup(name, user_id);
       if (result) {
+        const group = await GroupTable.findGroupByName(name);
+        await UserGroupTable.addNewMember(group.Owner, group.Id);
         return res.status(201).json({
           success: true,
         });

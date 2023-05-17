@@ -20,7 +20,6 @@ const usersController = {
         message = 'User is already a member of the group';
       }
 
-      console.log(message);
       if (message) {
         return res.status(400).json({
           success: false,
@@ -55,7 +54,6 @@ const usersController = {
         });
       }
 
-      console.log('next');
       await UserGroupTable.deleteMember(user_id, group_id);
       return res.status(200).json({
         success: true,
@@ -65,7 +63,35 @@ const usersController = {
         success: false,
         message: error?.message || 'Internal server error',
       });
-    }s
+    }
+  },
+  postMessage: async (req, res) => {
+    const user_id = req.user_id;
+    const { group_id } = req.params;
+    const { message } = req.body;
+    try {
+      const isOwner = await GroupTable.findGroupByGroupIdAndOwnerId(
+        group_id,
+        user_id
+      );
+      const isMember = await UserGroupTable.getGroup(user_id, group_id);
+      if (!isOwner && !isMember) {
+        return res.status(400).json({
+          success: false,
+          message: 'Cannot post message, you are not a member of the group',
+        });
+      }
+
+      await GroupTable.createMessage(user_id, group_id, message);
+      return res.status(200).json({
+        success: true,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
   },
 };
 
