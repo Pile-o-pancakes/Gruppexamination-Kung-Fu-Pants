@@ -2,7 +2,7 @@ const { Router } = require('express');
 const router = Router();
 const userController = require('../controllers/usersController.js');
 
-// router.get("/message", userController.getMessages);
+router.get('/message', userController.getUserPostedMessages);
 
 router.post('/message/:group_id', userController.postMessage);
 

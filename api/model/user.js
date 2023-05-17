@@ -11,6 +11,16 @@ const UserTable = {
       });
     });
   },
+  getUserPostedMessages: (id) => {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM Message WHERE UserId = ?`, [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  },
 };
 
 module.exports = UserTable;
