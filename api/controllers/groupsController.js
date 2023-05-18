@@ -60,6 +60,22 @@ const groupController = {
       });
     }
   },
+
+  getMembers: async (req, res) => {
+    const { group_id } = req.params;
+    try {
+      const members = await UserGroupTable.getAllMembers(group_id);
+      return res.status(200).json({
+        success: true,
+        members,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
 };
 
 module.exports = groupController;
