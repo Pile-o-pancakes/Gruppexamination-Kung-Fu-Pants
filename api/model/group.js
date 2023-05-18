@@ -3,7 +3,7 @@ const db = require('./db');
 const GroupTable = {
   createGroup: (name, user_id) => {
     return new Promise((resolve, reject) => {
-      db.get(
+      db.run(
         `INSERT INTO Groups(Name , Owner) VALUES (?,?)`,
         [name, user_id],
         (err, row) => {

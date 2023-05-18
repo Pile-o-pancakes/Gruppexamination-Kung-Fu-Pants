@@ -31,6 +31,21 @@ const UserGroupTable = {
       );
     });
   },
+  getAllMembers: (group_id) => {
+    return new Promise((resolve, reject) => {
+      db.all(
+        `SELECT U.Username , U.Id  FROM UserGroup as UG JOIN User as U ON UG.UserId = U.Id WHERE UG.GroupId = ? `,
+        [group_id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+            return;
+          }
+          resolve(rows);
+        }
+      );
+    });
+  },
   deleteMember: (user_id, group_id) => {
     return new Promise((resolve, reject) => {
       db.run(
