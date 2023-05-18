@@ -60,6 +60,16 @@ const GroupTable = {
       );
     });
   },
+  getUserOwnedGroups: (id) => {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM Groups WHERE Owner = ?`, [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  },
 };
 
 module.exports = GroupTable;

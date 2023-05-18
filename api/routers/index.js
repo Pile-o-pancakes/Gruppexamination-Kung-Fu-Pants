@@ -7,5 +7,6 @@ const checkToken = require('../middleware');
 
 app.use('/user', checkToken, usersRouter);
 
+
 app.use('/group', checkToken, groupsRouter);
 module.exports = app;

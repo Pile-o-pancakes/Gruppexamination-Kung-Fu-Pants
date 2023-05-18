@@ -8,11 +8,11 @@ router.post('/message/:group_id', userController.postMessage);
 
 router.put("/message/:id", userController.updateMessage);
 
-// router.delete("/message/:id", userController.deleteMessage);
+router.delete("/message/:id", userController.deleteMessage);
 
 // router.get("/groups", userController.getGroups);
 
-// router.get("/groups/:id", userController.getOwnGroups);
+router.get("/groups/:user_id", userController.getOwnGroups);
 
 router.post('/join/:group_id', userController.joinGroup);
 
