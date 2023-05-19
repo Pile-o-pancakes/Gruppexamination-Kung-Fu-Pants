@@ -12,8 +12,6 @@ router.delete("/message/:id", userController.deleteMessage);
 
 router.get("/groups", userController.getGroups);
 
-router.get("/groups/:user_id", userController.getOwnGroups);
-
 router.post('/join/:group_id', userController.joinGroup);
 
 router.delete('/leave/:group_id', userController.leaveGroup);
