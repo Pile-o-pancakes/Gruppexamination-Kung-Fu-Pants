@@ -183,6 +183,28 @@ const usersController = {
       });
     }
   },
+  getGroups: async (req, res) => {
+    const user_id = req.headers.authorization.split(' ')[1];
+    try {
+      const groupsJoined = await UserGroupTable.getUserJoinedGroups(user_id);
+
+      if (!groupsJoined.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No groups joined',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        groupsJoined,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
 };
 
 module.exports = usersController;

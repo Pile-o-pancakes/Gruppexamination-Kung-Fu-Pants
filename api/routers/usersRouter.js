@@ -10,7 +10,7 @@ router.put("/message/:id", userController.updateMessage);
 
 router.delete("/message/:id", userController.deleteMessage);
 
-// router.get("/groups", userController.getGroups);
+router.get("/groups", userController.getGroups);
 
 router.get("/groups/:user_id", userController.getOwnGroups);
 
