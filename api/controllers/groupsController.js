@@ -9,7 +9,7 @@ const groupController = {
     try {
       const group = await GroupTable.findGroupByName(name);
       if (group)
-        return res.status(400).json({
+        return res.status(200).json({
           success: false,
           message: 'Group already exists',
         });
@@ -77,12 +77,11 @@ const groupController = {
     }
   },
   getOwnGroups: async (req, res) => {
-    const user_id = req.headers.authorization.split(' ')[1];
+    const user_id = req.user_id;
     try {
       const groupsOwned = await GroupTable.getUserOwnedGroups(user_id);
-
       if (!groupsOwned.length) {
-        return res.status(400).json({
+        return res.status(404).json({
           success: false,
           message: 'No groups owned',
         });

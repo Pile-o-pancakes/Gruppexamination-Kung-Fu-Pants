@@ -44,30 +44,19 @@ const GroupTable = {
       );
     });
   },
-  createMessage: (user_id, group_id, message) => {
-    return new Promise((resolve, reject) => {
-      const createdAt = new Date().toISOString();
-      db.get(
-        'INSERT INTO Message(UserId, GroupId, Content, CreatedAt, ModifiedAt) VALUES (?,?,?,?,?)',
-        [user_id, group_id, message, createdAt, createdAt],
-        (err, row) => {
-          if (err) {
-            reject(err);
-          } else {
-            resolve(true);
-          }
-        }
-      );
-    });
-  },
+
   getUserOwnedGroups: (id) => {
     return new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM Groups WHERE Owner = ?`, [id], (err, rows) => {
-        if (err) {
-          reject(err);
+      db.all(
+        `SELECT Id, Name FROM Groups WHERE Owner = ?`,
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(rows);
         }
-        resolve(rows);
-      });
+      );
     });
   },
 };

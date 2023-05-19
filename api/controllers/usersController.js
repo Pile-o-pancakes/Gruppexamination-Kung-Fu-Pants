@@ -1,6 +1,7 @@
 const GroupTable = require('../model/group');
 const UserGroupTable = require('../model/usergroup');
 const UserTable = require('../model/user');
+const MessageTable = require('../model/message');
 
 const usersController = {
   joinGroup: async (req, res) => {
@@ -83,7 +84,7 @@ const usersController = {
         });
       }
 
-      await GroupTable.createMessage(user_id, group_id, message);
+      await MessageTable.createMessage(user_id, group_id, message);
       return res.status(200).json({
         success: true,
       });
@@ -97,10 +98,9 @@ const usersController = {
   getUserPostedMessages: async (req, res) => {
     const user_id = req.user_id;
     try {
-      const messages = await UserTable.getUserPostedMessages(user_id);
-      console.log(messages)
+      const messages = await MessageTable.getUserPostedMessages(user_id);
       if (!messages.length) {
-        return res.status(400).json({
+        return res.status(404).json({
           success: false,
           message: 'No messages found',
         });
@@ -117,19 +117,19 @@ const usersController = {
     }
   },
   updateMessage: async (req, res) => {
-    const message_id = req.params.id;
+    const message_id = req.params.message_id;
     const update = req.body.message;
     try {
-      const messages = await UserTable.updateUserPostedMessages(message_id, update);
-      if (!messages.length) {
-        return res.status(400).json({
+      const result = await MessageTable.update(message_id, update);
+      if (!result) {
+        return res.status(404).json({
           success: false,
           message: 'No messages found',
         });
       }
       return res.status(200).json({
         success: true,
-        message: "Message updated",
+        message: 'Message updated',
       });
     } catch (error) {
       return res.status(400).json({
@@ -139,20 +139,18 @@ const usersController = {
     }
   },
   deleteMessage: async (req, res) => {
-    const message_id = req.params.id;
+    const message_id = req.params.message_id;
     try {
-      const messages = await UserTable.getUserSpecificMessage(message_id);
-      //används för att kontrollera message.length innan deletion, då det ej går efter deletion
-      if (!messages.length) {
-        return res.status(400).json({
+      const result = await UserTable.delete(message_id);
+      if (!result) {
+        return res.status(404).json({
           success: false,
           message: 'No messages found',
         });
       }
-      const deleteMessages = await UserTable.deleteUserPostedMessages(message_id);
       return res.status(200).json({
         success: true,
-        message: "Message deleted",
+        message: 'Message deleted',
       });
     } catch (error) {
       return res.status(400).json({
@@ -163,11 +161,12 @@ const usersController = {
   },
   getOwnGroups: async (req, res) => {
     const user_id = req.params.user_id;
+
     try {
       const groupsOwned = await GroupTable.getUserOwnedGroups(user_id);
 
       if (!groupsOwned.length) {
-        return res.status(400).json({
+        return res.status(404).json({
           success: false,
           message: 'No groups owned',
         });
