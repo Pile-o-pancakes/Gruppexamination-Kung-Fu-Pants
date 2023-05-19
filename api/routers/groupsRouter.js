@@ -8,4 +8,6 @@ router.get('/messages/:group_id', groupController.getMessages);
 
 router.post('/create', groupController.createGroup);
 
+router.get("/groups/owner", groupController.getOwnGroups);
+
 module.exports = router;

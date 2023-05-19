@@ -76,6 +76,28 @@ const groupController = {
       });
     }
   },
+  getOwnGroups: async (req, res) => {
+    const user_id = req.headers.authorization.split(' ')[1];
+    try {
+      const groupsOwned = await GroupTable.getUserOwnedGroups(user_id);
+
+      if (!groupsOwned.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No groups owned',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        groupsOwned,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
 };
 
 module.exports = groupController;
