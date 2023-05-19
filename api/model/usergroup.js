@@ -61,6 +61,16 @@ const UserGroupTable = {
       );
     });
   },
+  getUserJoinedGroups: (id) => {
+    return new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM UserGroup INNER JOIN Groups ON UserGroup.GroupId=Groups.Id WHERE UserId = ? `, [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  },
 };
 
 module.exports = UserGroupTable;
