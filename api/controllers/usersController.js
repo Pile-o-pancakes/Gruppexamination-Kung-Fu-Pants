@@ -98,7 +98,7 @@ const usersController = {
     const user_id = req.user_id;
     try {
       const messages = await UserTable.getUserPostedMessages(user_id);
-
+      console.log(messages)
       if (!messages.length) {
         return res.status(400).json({
           success: false,
@@ -108,6 +108,95 @@ const usersController = {
       return res.status(200).json({
         success: true,
         messages,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
+  updateMessage: async (req, res) => {
+    const message_id = req.params.id;
+    const update = req.body.message;
+    try {
+      const messages = await UserTable.updateUserPostedMessages(message_id, update);
+      if (!messages.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No messages found',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Message updated",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
+  deleteMessage: async (req, res) => {
+    const message_id = req.params.id;
+    try {
+      const messages = await UserTable.getUserSpecificMessage(message_id);
+      //används för att kontrollera message.length innan deletion, då det ej går efter deletion
+      if (!messages.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No messages found',
+        });
+      }
+      const deleteMessages = await UserTable.deleteUserPostedMessages(message_id);
+      return res.status(200).json({
+        success: true,
+        message: "Message deleted",
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
+  getOwnGroups: async (req, res) => {
+    const user_id = req.params.user_id;
+    try {
+      const groupsOwned = await GroupTable.getUserOwnedGroups(user_id);
+
+      if (!groupsOwned.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No groups owned',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        groupsOwned,
+      });
+    } catch (error) {
+      return res.status(400).json({
+        success: false,
+        message: error?.message || 'Internal server error',
+      });
+    }
+  },
+  getGroups: async (req, res) => {
+    const user_id = req.headers.authorization.split(' ')[1];
+    try {
+      const groupsJoined = await UserGroupTable.getUserJoinedGroups(user_id);
+
+      if (!groupsJoined.length) {
+        return res.status(400).json({
+          success: false,
+          message: 'No groups joined',
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        groupsJoined,
       });
     } catch (error) {
       return res.status(400).json({
