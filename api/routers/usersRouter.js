@@ -1,14 +1,16 @@
 const { Router } = require('express');
 const router = Router();
 const userController = require('../controllers/usersController.js');
+const {checkMessageId} = require('../middleware');
+
 
 router.get('/message', userController.getUserPostedMessages);
 
 router.post('/message/:group_id', userController.postMessage);
 
-router.put('/message/:message_id', userController.updateMessage);
+router.put('/message/:message_id', checkMessageId, userController.updateMessage);
 
-router.delete('/message/:message_id', userController.deleteMessage);
+router.delete('/message/:message_id', checkMessageId, userController.deleteMessage);
 
 router.get('/groups', userController.getGroups);
 

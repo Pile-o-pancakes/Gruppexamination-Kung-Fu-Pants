@@ -141,7 +141,7 @@ const usersController = {
   deleteMessage: async (req, res) => {
     const message_id = req.params.message_id;
     try {
-      const result = await UserTable.delete(message_id);
+      const result = await MessageTable.delete(message_id);
       if (!result) {
         return res.status(404).json({
           success: false,
