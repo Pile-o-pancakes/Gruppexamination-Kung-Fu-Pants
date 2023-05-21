@@ -3,7 +3,7 @@ const app = express();
 
 const usersRouter = require('./usersRouter');
 const groupsRouter = require('./groupsRouter');
-const checkToken = require('../middleware');
+const {checkToken} = require('../middleware');
 
 app.use('/user', checkToken, usersRouter);
 

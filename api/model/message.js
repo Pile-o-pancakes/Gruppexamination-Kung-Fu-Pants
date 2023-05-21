@@ -73,7 +73,7 @@ const MessageTable = {
       });
     });
   },
-  delete: (id, update) => {
+  delete: (id) => {
     return new Promise((resolve, reject) => {
       db.serialize(() => {
         db.get('SELECT * FROM Message WHERE Id = ?', [id], (err, row) => {
@@ -85,8 +85,8 @@ const MessageTable = {
           } else {
             db.serialize(() => {
               db.run(
-                `DELETE FROM Message WHERE Id = ?,?`,
-                [update, id],
+                `DELETE FROM Message WHERE Id = ?`,
+                [id],
                 (err) => {
                   if (err) {
                     reject(err);
@@ -98,6 +98,20 @@ const MessageTable = {
           }
         });
       });
+    });
+  },
+  findMessageByMessageId: (id) => {
+    return new Promise((resolve, reject) => {
+      db.all(
+        `SELECT M.UserId FROM Message AS M WHERE Id = ?`,
+        [id],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(rows[0]?.UserId);
+        }
+      );
     });
   },
 };
