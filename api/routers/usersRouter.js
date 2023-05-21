@@ -6,7 +6,7 @@ const {checkMessageId} = require('../middleware');
 
 router.get('/message', userController.getUserPostedMessages);
 
-router.post('/message/:group_id', userController.postMessage);
+router.post('/message', userController.postMessage);
 
 router.put('/message/:message_id', checkMessageId, userController.updateMessage);
 

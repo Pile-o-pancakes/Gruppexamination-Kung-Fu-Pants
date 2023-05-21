@@ -69,25 +69,48 @@ const usersController = {
   },
   postMessage: async (req, res) => {
     const user_id = req.user_id;
-    const { group_id } = req.params;
-    const { message } = req.body;
+    const { group_ids, message } = req.body;
+    if (!group_ids || !message) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide group_ids and message',
+      });
+    }
     try {
-      const isOwner = await GroupTable.findGroupByGroupIdAndOwnerId(
-        group_id,
-        user_id
-      );
-      const isMember = await UserGroupTable.getGroup(user_id, group_id);
-      if (!isOwner && !isMember) {
-        return res.status(400).json({
-          success: false,
-          message: 'Cannot post message, you are not a member of the group',
-        });
+      let completed_groups = [];
+      let failed_groups = [];
+      for (const group_id of group_ids) {
+        const isOwner = await GroupTable.findGroupByGroupIdAndOwnerId(
+          group_id,
+          user_id
+        );
+        const isMember = await UserGroupTable.getGroup(user_id, group_id);
+        if (!isOwner && !isMember) {
+          failed_groups.push(group_id);
+        } else {
+          await MessageTable.createMessage(user_id, group_id, message);
+          completed_groups.push(group_id);
+        }
       }
 
-      await MessageTable.createMessage(user_id, group_id, message);
-      return res.status(200).json({
-        success: true,
-      });
+      if (completed_groups.length && failed_groups.length) {
+        return res.status(200).json({
+          success: false,
+          message: `Message posted to group(s) ${completed_groups.join(
+            ', '
+          )} but failed to post to group(s) ${failed_groups.join(', ')}`,
+        });
+      } else if (completed_groups.length) {
+        return res.status(200).json({
+          success: true,
+          message: `Message posted to group(s) ${completed_groups.join(', ')}`,
+        });
+      } else if (failed_groups.length) {
+        return res.status(400).json({
+          success: false,
+          message: `Failed to post to group(s) ${failed_groups.join(', ')}`,
+        });
+      }
     } catch (error) {
       return res.status(400).json({
         success: false,
@@ -119,8 +142,28 @@ const usersController = {
   updateMessage: async (req, res) => {
     const message_id = req.params.message_id;
     const update = req.body.message;
+    const user_id = req.user_id;
+    if (!update) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide message',
+      });
+    }
+    if (!message_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide message_id',
+      });
+    }
+    if (!user_id) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide user_id',
+      });
+    }
+
     try {
-      const result = await MessageTable.update(message_id, update);
+      const result = await MessageTable.update(message_id, update, user_id);
       if (!result) {
         return res.status(404).json({
           success: false,
