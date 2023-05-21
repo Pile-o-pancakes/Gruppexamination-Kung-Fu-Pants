@@ -4,7 +4,7 @@ const userController = require('../controllers/usersController.js');
 
 router.get('/message', userController.getUserPostedMessages);
 
-router.post('/message/:group_id', userController.postMessage);
+router.post('/message', userController.postMessage);
 
 router.put('/message/:message_id', userController.updateMessage);
 

@@ -85,7 +85,7 @@ const MessageTable = {
           } else {
             db.serialize(() => {
               db.run(
-                `DELETE FROM Message WHERE Id = ??`,
+                `DELETE FROM Message WHERE Id = ?,?`,
                 [update, id],
                 (err) => {
                   if (err) {
