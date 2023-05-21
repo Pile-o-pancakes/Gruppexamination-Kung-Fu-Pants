@@ -155,13 +155,6 @@ const usersController = {
         message: 'Please provide message_id',
       });
     }
-    if (!user_id) {
-      return res.status(400).json({
-        success: false,
-        message: 'Please provide user_id',
-      });
-    }
-
     try {
       const result = await MessageTable.update(message_id, update, user_id);
       if (!result) {
@@ -203,7 +196,7 @@ const usersController = {
     }
   },
   getOwnGroups: async (req, res) => {
-    const user_id = req.params.user_id;
+    const user_id = req.user_id;
 
     try {
       const groupsOwned = await GroupTable.getUserOwnedGroups(user_id);
@@ -226,7 +219,7 @@ const usersController = {
     }
   },
   getGroups: async (req, res) => {
-    const user_id = req.headers.authorization.split(' ')[1];
+    const user_id = req.user_id;
     try {
       const groupsJoined = await UserGroupTable.getUserJoinedGroups(user_id);
 
